@@ -1,0 +1,53 @@
+/* Stored Procedures ==> (sql functions)*/
+
+/* Syntax of Stored Procedures:-
+DELIMITER &&
+create procedure procedure_name()
+BEGIN
+	query;
+END &&
+*/
+use abhi_sql;
+
+/* create a procedure / function for show all record */
+DELIMITER &&
+create procedure all_rec()
+BEGIN
+select *  from bank_details;
+END &&
+
+/* how to call or run a service */
+call all_rec()
+
+/* In run time or call time how to do avg. of balance of any type of job role/ */
+DELIMITER &&
+create procedure avg_bal_job_role(IN jr varchar(30)) /* jr = jobrole (variable name) */
+BEGIN
+select avg(balance) from bank_details where job = jr;
+END &&
+
+call avg_bal_job_role ('admin.');
+call avg_bal_job_role ('management');
+
+select distinct job from bank_details;
+
+/* another example */
+select * from bank_details where education ='primary' and job='admin.';
+
+/* how to create a procedure of above query in dynamic type like you can 
+choose any type of education and any type of job role*/
+
+DELIMITER &&
+create procedure sel_edu_job (in v1 varchar(30), in v2 varchar(30) )
+BEGIN
+select * from bank_details where education = v1 and job = v2;
+END &&
+
+call sel_edu_job('primary','admin.');
+
+/* Basic views functionality */
+/* It helps us  to create a sub set of original table  
+means (you create a new table of your requirement columns)*/
+
+create view bank_view as select age, job, marital, balance, education from bank_details ;
+select * from bank_view
